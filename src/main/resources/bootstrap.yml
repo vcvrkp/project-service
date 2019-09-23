@@ -1,0 +1,9 @@
+spring:
+    cloud:
+        config:
+          name: projectservice
+          fail-fast: false
+          
+eureka:
+  instance:
+    appname: projectservice
