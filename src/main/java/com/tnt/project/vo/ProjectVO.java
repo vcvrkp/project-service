@@ -1,4 +1,4 @@
-package com.tnt.project.controller.vo;
+package com.tnt.project.vo;
 
 import java.util.Date;
 

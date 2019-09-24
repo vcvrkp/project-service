@@ -118,3 +118,17 @@ CREATE TABLE IF NOT EXISTS `projectcost` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+insert into Project(id,organizationId,startDate,name) values (1, 1, CURDATE(),'Vacaciones');
+insert into Project(id,organizationId,startDate,name) values (2, 1, CURDATE(),'Permiso extraordinario');
+insert into Project(id,organizationId,startDate,name) values (3, 1, CURDATE(),'Baja por enfermedad');
+insert into Project(id,organizationId,startDate,name) values (4, 1, CURDATE(),'Auto-formación');
+insert into Project(id,organizationId,startDate,name) values (5, 1, CURDATE(),'Histórico');
+insert into Project(id,organizationId,startDate,name) values (6, 2, CURDATE(),'Testing');
+
+INSERT INTO ProjectRole( projectId, name, costPerHour, expectedHours )   SELECT id, name, 3, 1 FROM Project;
+INSERT INTO `ProjectCost` VALUES  (3,1,'Fotocopias','200.00',1,NULL,NULL,NULL,NULL),  (4,1,'Material','300.00',1,NULL,NULL,NULL,NULL);
+INSERT INTO `ProjectCost` VALUES  (5,2,'Fotocopias','200.00',1,NULL,NULL,NULL,NULL),  (6,2,'Material','300.00',1,NULL,NULL,NULL,NULL);
+INSERT INTO `Objective` (`id`,`userId`,`projectId`,`startDate`,`endDate`,`state`,`name`,`log`,`departmentId`,`insertDate`,`updateDate`) VALUES    (1,1,4,'2009-04-13','2009-04-14','PENDING','Entrega del pedido qweeeeeeee',NULL,1,'2009-04-13 15:32:39','2009-04-13 15:32:39');
+INSERT INTO `Objective` (`id`,`userId`,`projectId`,`startDate`,`endDate`,`state`,`name`,`log`,`departmentId`,`insertDate`,`updateDate`) VALUES    (2,1,4,'2009-04-13','2009-04-14','PENDING','Entrega del pedido qweeeeeeee',NULL,1,'2009-04-13 15:33:15','2009-04-13 15:33:15');

@@ -5,6 +5,7 @@ import static springfox.documentation.builders.PathSelectors.any;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -19,6 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.tnt")
 @RefreshScope
+@EnableFeignClients
 public class ProjectServiceApplication {
 
     @Bean

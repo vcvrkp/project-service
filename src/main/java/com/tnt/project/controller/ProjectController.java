@@ -1,5 +1,7 @@
 package com.tnt.project.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -23,6 +25,10 @@ import com.tnt.project.domain.ProjectRole;
 import com.tnt.project.domain.repository.ProjectCostRepository;
 import com.tnt.project.domain.repository.ProjectRepository;
 import com.tnt.project.domain.repository.ProjectRoleRepository;
+import com.tnt.project.service.OfferService;
+import com.tnt.project.vo.Offer;
+import com.tnt.project.vo.OfferCost;
+import com.tnt.project.vo.OfferRole;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +48,9 @@ public class ProjectController {
     @Autowired
     ProjectCostRepository projectCostRepository;
 
+    @Autowired
+    private OfferService offerService;
+
     @GetMapping
     @ApiOperation(value = "Fetches all projects", nickname = "getProjects")
     public List<Project> getProjects(@RequestParam(required = false) Integer orgId) {
@@ -55,12 +64,52 @@ public class ProjectController {
     
     @PostMapping
     @ApiOperation(value = "Creates Project", nickname = "createProject")
-    public Project createProject(@Valid @RequestBody(required = true) CreateProjectForm projectForm) {
+    public Project createProject(@Valid @RequestBody CreateProjectForm projectForm) {
         LOGGER.info("Creating Proect with Name " + projectForm.getName());
         Project project = new Project();
         BeanUtils.copyProperties(projectForm, project);
         projectRepository.save(project);
-        LOGGER.info("Organization Created with Id " + project.getId());
+        
+        if (projectForm.getOfferId() != null && projectForm.getOfferId() > 0) {
+            Integer offerId = projectForm.getOfferId();
+            Offer offer = offerService.getOffer(offerId);
+            
+            if (offer != null) {
+                project.setOrganizationId(offer.getOrganizationId());
+                project.setStartDate(new Date());
+                project.setOpen(true);
+                
+                List<OfferRole> roles = offerService.getRoles(offerId);
+                List<OfferCost> costs = offerService.getCosts(offerId);
+                List<ProjectCost> projectCosts = new ArrayList<ProjectCost>();
+                List<ProjectRole> projectRoles = new ArrayList<ProjectRole>();
+                
+                for (OfferRole role : roles) {
+                    ProjectRole pr = new ProjectRole();
+                    pr.setName(role.getName());
+                    pr.setCostPerHour(role.getCostPerHour());
+                    pr.setExpectedHours(role.getExpectedHours());
+                    pr.setProjectId(project.getId());
+                    projectRoles.add(pr);
+                }
+                projectRoleRepository.saveAll(projectRoles);
+                LOGGER.info("Saved all project roles from offer");
+                for (OfferCost cost : costs) {
+                    ProjectCost pc = new ProjectCost();
+                    pc.setName(cost.getName());
+                    pc.setBillable(cost.isBillable());
+                    pc.setCost(cost.getCost());
+                    pc.setProjectId(project.getId());
+                    projectCosts.add(pc);
+                }
+                projectCostRepository.saveAll(projectCosts);
+                LOGGER.info("Saved all project costs from offer");
+                
+            }
+        }
+        
+        
+        LOGGER.info("Project Created with Id " + project.getId());
         return project;
     }
 

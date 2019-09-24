@@ -36,6 +36,22 @@ public class CreateProjectForm {
     private Date updateDate;
 
     private boolean billable;
+    
+    private Integer offerId;
+
+    /**
+     * @return the offerId
+     */
+    public Integer getOfferId() {
+        return offerId;
+    }
+
+    /**
+     * @param offerId the offerId to set
+     */
+    public void setOfferId(Integer offerId) {
+        this.offerId = offerId;
+    }
 
     /**
      * @return the organizationId
