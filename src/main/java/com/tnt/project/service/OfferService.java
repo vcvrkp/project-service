@@ -31,3 +31,18 @@ public interface OfferService {
     List<OfferCost> getCosts(@PathVariable("offerId") Integer offerId);
     
 }
+/*
+ * @Component class OfferServiceFallbackImpl implements OfferService {
+ * 
+ * @Override public Offer getOffer(Integer offerId) { // TODO Auto-generated
+ * method stub System.out.println("Testing fallback"); Offer offer = new
+ * Offer(); offer.setId(0); offer.setNumber("0"); return offer; }
+ * 
+ * @Override public List<OfferRole> getRoles(Integer offerId) { // TODO
+ * Auto-generated method stub return null; }
+ * 
+ * @Override public List<OfferCost> getCosts(Integer offerId) { // TODO
+ * Auto-generated method stub return null; }
+ * 
+ * }
+ */
